@@ -4,6 +4,7 @@ import './scss/index.scss';
 import {Provider} from 'react-redux';
 import createStore from './store-creator';
 import App from './app/index';
+import reducer from './ducks';
 
 const store = createStore();
 render(

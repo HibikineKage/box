@@ -1,0 +1,3 @@
+export function * waitMatching() {
+  yield
+}

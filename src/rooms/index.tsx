@@ -1,14 +1,41 @@
 import {Container} from 'react-pixi-fiber';
 import {ClientRoom} from '../server/app';
-import {connect} from 'react-redux';
-import {Room} from '../room';
+import {connect, Dispatch} from 'react-redux';
+import {Room} from './room';
 import * as React from 'react';
 import {State} from '../ducks';
+import {REQUEST_ROOM_LIST, ADD_ROOM} from './ducks';
+import socket from '../app/socket';
+import AddRoom from './add-room';
 interface Props {
-    rooms : ClientRoom[];
+  fetchRoomList : () => any;
+  rooms : ClientRoom[];
+  addRoom : (roomName : string) => any;
 }
-const Rooms = (props : Props) => <Container>
-    {props
-        .rooms
-        .map(room => <Room {...room}/>)}</Container>
-export default connect((state : State) => ({rooms: state.rooms.rooms}))(Rooms);
+class Rooms extends React.Component < Props > {
+  constructor(props : Props) {
+    super(props)
+    console.log('fetchRoomList');
+    socket.on('connect', () => {
+      this
+        .props
+        .fetchRoomList();
+    })
+  }
+  render() {
+    return (
+      <div>
+        {this
+          .props
+          .rooms
+          .map(room => <Room {...room}/>)
+}<AddRoom addRoom={this.props.addRoom}/></div>
+    )
+  }
+}
+export default connect((state : State) => ({rooms: state.rooms.rooms}), (dispatch : Dispatch) => ({
+  fetchRoomList: () => dispatch({type: REQUEST_ROOM_LIST}),
+  addRoom: (roomName : string) => dispatch({type: ADD_ROOM, payload: {
+      roomName
+    }})
+}))(Rooms);

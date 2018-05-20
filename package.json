@@ -26,6 +26,7 @@
     "@types/socket.io-client": "^1.4.32",
     "babel-jest": "^22.4.3",
     "babel-loader": "^8.0.0-beta.2",
+    "canvas-prebuilt": "^1.6.5-prerelease.1",
     "coveralls": "^3.0.1",
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
@@ -44,6 +45,7 @@
     "react-test-renderer": "^16.3.2",
     "sass-loader": "^7.0.1",
     "style-loader": "^0.21.0",
+    "ts-jest": "^22.4.6",
     "ts-loader": "^4.3.0",
     "typescript": "^2.8.3",
     "typescript-eslint-parser": "^15.0.0",
@@ -71,7 +73,7 @@
     "uws": "^10.148.0"
   },
   "scripts": {
-    "start": "webpack-serve --content ./public",
+    "start": "webpack --watch",
     "start-server": "webpack --config webpack.config.server.js --watch",
     "start-nodemon": "nodemon dist/server.js",
     "test": "jest"
@@ -89,6 +91,12 @@
       "json",
       "node"
     ],
+    "setupFiles": [
+      "./tests/jest.setup-pixi.ts"
+    ],
+    "globals": {
+      "__DEV__": true
+    },
     "collectCoverageFrom": [
       "src/**/*.tsx?$"
     ]

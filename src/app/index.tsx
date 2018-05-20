@@ -7,11 +7,5 @@ import Router from '../router/index';
 
 const textures = [icon, hibikine].map(i => PIXI.Texture.fromImage(i));
 console.log(icon);
-const App = () => (
-  <Stage width={800} height={800} options={{
-    backgroundColor: 0xffffff
-  }}>
-    <Router/>
-  </Stage>
-)
+const App = () => (<Router/>)
 export default App;
