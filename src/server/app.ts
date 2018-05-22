@@ -2,19 +2,31 @@ import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as socketIO from 'socket.io';
 import {REQUEST_ROOM_LIST, RECEIVE_ROOM_LIST, ADD_ROOM, CreateRoom, ADD_ROOM_SUCCEED} from '../rooms/ducks';
+import {JOIN_ROOM} from '../matching/ducks';
 import sha256 = require('crypto-js');
 dotenv.config({path: '.env'});
 const app = express();
 const http = require('http').Server(app);
 const io = socketIO(http, {origins: 'localhost:*'});
 
+export enum RoomStatus {
+  Waiting = 'Waiting',
+  Matching = 'Matching',
+  Playing = 'Playing'
+}
+
 export interface Room {
   name : string;
   host : User;
+  isPrivate : boolean;
+  status : RoomStatus;
 }
+
 export interface ClientRoom {
   name : string;
   hostName : string;
+  isPrivate : boolean;
+  status : RoomStatus;
 }
 const rooms : Room[] = [];
 
@@ -26,7 +38,8 @@ export interface User {
 const waintingUsers : User[] = [];
 let users : User[] = [];
 
-const getRoomList = () : ClientRoom[] => rooms.map(room => ({name: room.name, hostName: room.host.name}))
+const roomToClientRoom = (room : Room) : ClientRoom => ({name: room.name, hostName: room.host.name, isPrivate: room.isPrivate, status: room.status});
+const getRoomList = () : ClientRoom[] => rooms.map(roomToClientRoom);
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'localhost:*');
@@ -38,6 +51,7 @@ app.use((req, res, next) => {
 app.use(express.static('public'));
 app.set('port', process.env.PORT || 3000);
 console.log(`port set to ${process.env.PORT || 3000}`);
+
 io.on('connection', (socket : socketIO.Socket) => {
   console.log('connected');
   users.push({name: 'ななしちゃん', socketId: socket.client.id});
@@ -47,11 +61,13 @@ io.on('connection', (socket : socketIO.Socket) => {
     socket.emit(RECEIVE_ROOM_LIST, getRoomList());
   });
 
-  socket.on(ADD_ROOM, ({roomName} : CreateRoom) => {
+  socket.on(ADD_ROOM, ({roomName, isPrivate} : CreateRoom) => {
     console.log('add new room');
     rooms.push({
       name: roomName,
-      host: users.filter(user => user.socketId === socket.client.id)[0]
+      host: users.filter(user => user.socketId === socket.client.id)[0],
+      isPrivate,
+      status: RoomStatus.Matching
     });
     console.log(rooms);
     socket.emit(ADD_ROOM_SUCCEED);

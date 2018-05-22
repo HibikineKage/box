@@ -16,6 +16,7 @@ export interface State {
 }
 export interface CreateRoom {
   roomName : string;
+  isPrivate : boolean;
 }
 export interface RoomListFetchSucceedAction extends Action {
   payload : ClientRoom[];
