@@ -8,6 +8,10 @@ module.exports = {
     filename: 'bundle.js',
   },
   mode: 'development',
+  watch: true,
+  watchOptions: {
+    poll: true,
+  },
   module: {
     /* ファイルローダーなどの設定 */
     rules: [
