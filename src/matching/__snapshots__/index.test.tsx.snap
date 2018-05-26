@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Matching returns  matching scene 1`] = `[Function]`;
+
+exports[`Matching returns  timeout 1`] = `
+<div>
+  <div>
+    <p>
+      Timed out
+    </p>
+    <p>
+      <button
+        onClick={[MockFunction]}
+      >
+        Back to lobby
+      </button>
+    </p>
+  </div>
+</div>
+`;
