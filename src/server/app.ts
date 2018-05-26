@@ -67,8 +67,8 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.static('public'));
-app.set('port', process.env.PORT || 3000);
-console.log(`port set to ${process.env.PORT || 3000}`);
+app.set('port', process.env.PORT || 3030);
+console.log(`port set to ${process.env.PORT || 3030}`);
 
 const nextRoomIdGenerator = (function*(): IterableIterator<number> {
   let i = 0;
