@@ -7,6 +7,7 @@ import {State} from '../ducks';
 import {REQUEST_ROOM_LIST, ADD_ROOM} from './ducks';
 import socket from '../app/socket';
 import AddRoom from './add-room';
+import {dummyFunction} from '../utils';
 interface Props {
   fetchRoomList : () => any;
   rooms : ClientRoom[];
@@ -28,8 +29,9 @@ class Rooms extends React.Component < Props > {
         {this
           .props
           .rooms
-          .map(room => <Room {...room}/>)
-}<AddRoom addRoom={this.props.addRoom}/></div>
+          .map(room => <Room key={room.roomId} joinRoom={dummyFunction} {...room}/>)
+}<AddRoom addRoom={this.props.addRoom}/>
+      </div>
     )
   }
 }
@@ -38,4 +40,9 @@ export default connect((state : State) => ({rooms: state.rooms.rooms}), (dispatc
   addRoom: (roomName : string) => dispatch({type: ADD_ROOM, payload: {
       roomName
     }})
-}))(Rooms);
+}), (stateProps, dispatchProps) => {
+  return {
+    ...stateProps,
+    ...dispatchProps
+  }
+})(Rooms);

@@ -7,6 +7,7 @@ export enum Scene {
   Game = 'GAME',
   Matching = 'MATCHING'
 }
+export const BACK_TO_LOBBY = 'BACK_TO_LOBBY';
 export interface State {
   currentScene : Scene;
 }
@@ -14,15 +15,18 @@ const initialState : State = {
   currentScene: Scene.Rooms
 };
 export const reducer = (state : State = initialState, action : Action) : State => {
+  console.log(action);
   switch (action.type) {
     case ADD_ROOM_SUCCEED:
     case JOIN_ROOM:
+      console.log('matching');
       return {
         ...state,
         currentScene: Scene.Matching
       };
     case MATCH_ROOM_FAILED:
     case JOIN_ROOM_FAILED:
+    case BACK_TO_LOBBY:
       return {
         ...state,
         currentScene: Scene.Rooms
@@ -35,5 +39,5 @@ export const reducer = (state : State = initialState, action : Action) : State =
       };
   }
   return state;
-}
+};
 export default reducer;
