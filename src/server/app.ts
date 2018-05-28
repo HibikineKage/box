@@ -9,7 +9,7 @@ import {
   ADD_ROOM_SUCCEED,
   LEAVE_ROOM
 } from '../rooms/ducks';
-import {JOIN_ROOM, JOIN_ROOM_FAILED, JOIN_ROOM_SUCCEED} from '../matching/ducks';
+import {JOIN_ROOM, JOIN_ROOM_FAILED, JOIN_ROOM_SUCCEED, DELETED_ROOM, MATCH_ROOM_TIMEOUT} from '../matching/ducks';
 import {nextRoomId} from './utils';
 import sha256 = require('crypto-js');
 dotenv.config({path: '.env'});
@@ -96,8 +96,9 @@ io.on('connection', (socket : socketIO.Socket) => {
     socket.emit(ADD_ROOM_SUCCEED);
   });
 
-  socket.on(LEAVE_ROOM, () => {
+  socket.on(MATCH_ROOM_TIMEOUT, () => {
     rooms = rooms.filter(room => room.host.socketId !== socket.client.id);
+    socket.emit(DELETED_ROOM);
   });
 
   socket.on(JOIN_ROOM, (joinRoom : ClientRoom) => {
@@ -138,6 +139,7 @@ io.on('connection', (socket : socketIO.Socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected.');
     users = users.filter(user => user.socketId !== socket.client.id);
+    rooms = rooms.filter(room => room.host.socketId !== socket.client.id);
   });
 });
 http.listen(app.get('port'), () => {

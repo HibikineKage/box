@@ -11,7 +11,8 @@ export function * waitMatching() {
   });
   if (timeout) {
     console.log('timeout');
-    matchUserTimeout();
+    console.log('aaa');
+    yield call(matchUserTimeout);
     yield put({type: MATCH_ROOM_TIMEOUT});
     yield fork(fetchRoomList);
   }
