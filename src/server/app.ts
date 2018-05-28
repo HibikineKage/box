@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as socketIO from 'socket.io';
 import {REQUEST_ROOM_LIST, RECEIVE_ROOM_LIST, ADD_ROOM, CreateRoom, ADD_ROOM_SUCCEED} from '../rooms/ducks';
+import { MATCH_ROOM } from '../matching/ducks';
 import sha256 = require('crypto-js');
 dotenv.config({path: '.env'});
 const app = express();
@@ -57,7 +58,9 @@ io.on('connection', (socket : socketIO.Socket) => {
     socket.emit(ADD_ROOM_SUCCEED);
   });
 
-  socket.on(JOIN_ROOM, () => {})
+  socket.on(JOIN_ROOM, () => {
+    socket.emit(MATCH_ROOM, )
+  })
 
   socket.on('disconnect', () => {
     console.log('user disconnected.')

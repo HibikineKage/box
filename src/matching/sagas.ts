@@ -1,3 +1,4 @@
+import * as Api from './api'
 export function * waitMatching() {
-  yield
+  yield call(Api.matchUser());
 }
