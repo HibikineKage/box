@@ -6,6 +6,5 @@ import Button from '../components/button';
 import Router from '../router/index';
 
 const textures = [icon, hibikine].map(i => PIXI.Texture.fromImage(i));
-console.log(icon);
 const App = () => <Router />;
 export default App;

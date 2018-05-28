@@ -1,6 +1,6 @@
-import * as Api from './api';
 import { call, put } from 'redux-saga/effects';
 import { Action } from 'redux';
+import * as Api from './api';
 import { SERVER_INFO_FETCH_FAILED } from './ducks';
 
 export interface ServerInfo {}

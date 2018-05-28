@@ -34,6 +34,5 @@ export const addRoom = async (roomName: string) =>
     socket.on(ADD_ROOM_FAILED, () => {
       reject();
     });
-    console.log('addroom');
     socket.emit(ADD_ROOM, createRoom);
   });

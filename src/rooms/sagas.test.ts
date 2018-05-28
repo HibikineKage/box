@@ -2,7 +2,7 @@ import { fetchRoomList } from './sagas';
 import { testRooms } from './__mocks__/api';
 
 test('fetchroomlist', () => {
-  const fetching = fetchRoomList({ type: null });
+  const fetching = fetchRoomList();
   const fetched = fetching.next();
   expect(fetched.value).toEqual(testRooms);
   const setRoomListAction = fetching.next();

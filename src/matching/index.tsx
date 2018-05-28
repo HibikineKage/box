@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
 import { MatchingStatus } from './ducks';
 import { State } from '../ducks';
-import { connect, Dispatch } from 'react-redux';
 import { BACK_TO_LOBBY } from '../router/ducks';
 
 export interface Props {

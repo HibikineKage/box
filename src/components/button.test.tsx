@@ -20,9 +20,7 @@ test('button test', () => {
           hover: new PIXI.Texture(new PIXI.BaseTexture()),
           press: new PIXI.Texture(new PIXI.BaseTexture()),
         }}
-        onClick={() => {
-          console.log('clicked!');
-        }}
+        onClick={() => {}}
       />
     </Stage>,
   );

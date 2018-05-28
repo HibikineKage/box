@@ -1,8 +1,8 @@
 import { Container } from 'react-pixi-fiber';
-import { ClientRoom } from '../server/app';
 import { connect, Dispatch } from 'react-redux';
-import { Room } from './room';
 import * as React from 'react';
+import { ClientRoom } from '../server/app';
+import { Room } from './room';
 import { State } from '../ducks';
 import { REQUEST_ROOM_LIST, ADD_ROOM } from './ducks';
 import socket from '../app/socket';
@@ -17,7 +17,6 @@ interface Props {
 class Rooms extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    console.log('fetchRoomList');
     socket.on('connect', () => {
       this.props.fetchRoomList();
     });

@@ -28,13 +28,15 @@ const initialState: State = {
 };
 export const reducer = (state: State = initialState, action: Action) => {
   switch (action.type) {
-    case ROOM_LIST_FETCH_SUCCEED:
-      const roomListFetchAction = action as RoomListFetchSucceedAction;
-      return {
-        ...state,
-        rooms: roomListFetchAction.payload,
-      };
+  case ROOM_LIST_FETCH_SUCCEED: {
+    const roomListFetchAction = action as RoomListFetchSucceedAction;
+    return {
+      ...state,
+      rooms: roomListFetchAction.payload,
+    };
   }
-  return state;
+  default:
+    return state;
+  }
 };
 export default reducer;

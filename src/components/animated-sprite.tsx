@@ -18,18 +18,12 @@ export interface DefaultProps {
 }
 
 type PropsWithDefaults = Props & DefaultProps;
+export interface State {
+  currentFrame: number;
+}
 
-export default class AnimatedSprite extends React.Component<Props> {
-  state: { currentFrame: number } = { currentFrame: 0 };
-  count: number = 0;
-  context!: StageContext;
-  static get defaultProps(): DefaultProps {
-    return { animationSpeed: 1 };
-  }
-  tickerCallback?: (deltaTime: number) => void;
-  constructor(props: Props) {
-    super(props);
-  }
+export default class AnimatedSprite extends React.Component<Props, State> {
+  state: State = { currentFrame: 0 };
   componentDidMount() {
     this.tickerCallback = deltaTime => {
       const { animationSpeed } = this.props as PropsWithDefaults;
@@ -50,9 +44,15 @@ export default class AnimatedSprite extends React.Component<Props> {
       this.context.app.ticker.remove(this.tickerCallback);
     }
   }
+  static get defaultProps(): DefaultProps {
+    return { animationSpeed: 1 };
+  }
   static get contextTypes() {
     return { app: PropTypes.object.isRequired };
   }
+  tickerCallback?: (deltaTime: number) => void;
+  context!: StageContext;
+  count: number = 0;
 
   render() {
     return (

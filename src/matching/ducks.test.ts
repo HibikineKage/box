@@ -2,9 +2,10 @@ import reducer, {
   MATCH_ROOM_FAILED,
   JOIN_ROOM_FAILED,
   MATCH_ROOM_TIMEOUT,
+  MatchingStatus,
+  JOIN_ROOM,
 } from './ducks';
 import { ADD_ROOM_SUCCEED } from '../rooms/ducks';
-import { MatchingStatus, JOIN_ROOM } from './ducks';
 
 describe('matching reducer should return ', () => {
   const initialState = reducer(undefined, { type: null });

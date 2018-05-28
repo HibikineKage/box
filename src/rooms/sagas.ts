@@ -1,6 +1,6 @@
-import * as Api from './api';
 import { call, put, fork } from 'redux-saga/effects';
 import { Action } from 'redux';
+import * as Api from './api';
 import {
   ROOM_LIST_FETCH_FAILED,
   AddRoomPayload,
@@ -15,7 +15,6 @@ import { waitMatching } from '../matching/sagas';
 
 export function* fetchRoomList() {
   try {
-    console.log('fetch');
     const serverInfo: ClientRoom[] = yield call(Api.fetchRoomList);
     yield put({ type: ROOM_LIST_FETCH_SUCCEED, payload: serverInfo });
   } catch (e) {
@@ -25,7 +24,7 @@ export function* fetchRoomList() {
 
 export function* addRoom(
   action: Action & {
-    payload: AddRoomPayload;
+  payload: AddRoomPayload;
   },
 ) {
   try {

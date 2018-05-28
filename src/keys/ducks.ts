@@ -9,3 +9,4 @@ interface State {
 }
 const initialState: State = { keyStatuses: new Map() };
 export const reducer = (state: State = initialState, action: Action) => state;
+export default reducer;

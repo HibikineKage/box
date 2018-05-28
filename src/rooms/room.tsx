@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Container, Text } from 'react-pixi-fiber';
+import { Dispatch, bindActionCreators } from 'redux';
 import { ClientRoom } from '../server/app';
 import { JOIN_ROOM } from '../matching/ducks';
-import { Dispatch, bindActionCreators } from 'redux';
 
 interface InnerProps extends ClientRoom {
   joinRoom: () => any;

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Props, Matching } from './index';
 import * as renderer from 'react-test-renderer';
+import { Props, Matching } from './index';
 import { MatchingStatus } from './ducks';
 
 describe('Matching returns ', () => {

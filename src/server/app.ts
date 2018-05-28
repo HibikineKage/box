@@ -1,3 +1,4 @@
+/* eslint no-console: 0 */
 import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as socketIO from 'socket.io';
@@ -115,7 +116,7 @@ io.on('connection', (socket: socketIO.Socket) => {
   });
 
   socket.on(JOIN_ROOM, (joinRoom: ClientRoom) => {
-    const room = rooms.find(room => {
+    const selectedRoom = rooms.find(room => {
       if (room.name !== joinRoom.name) {
         return false;
       }
@@ -133,7 +134,7 @@ io.on('connection', (socket: socketIO.Socket) => {
       }
       return true;
     });
-    if (room === undefined) {
+    if (selectedRoom === undefined) {
       socket.emit(JOIN_ROOM_FAILED);
       return;
     }
@@ -143,8 +144,8 @@ io.on('connection', (socket: socketIO.Socket) => {
       socket.emit(CONNECTION_EXPIRED_ERROR);
       return;
     }
-    room.players.push(user);
-    socket.emit(JOIN_ROOM_SUCCEED, room);
+    selectedRoom.players.push(user);
+    socket.emit(JOIN_ROOM_SUCCEED, selectedRoom);
   });
 
   socket.on('disconnect', () => {

@@ -5,7 +5,7 @@ import socket from './socket';
 
 export const fetchServerInfo = async () => {
   socket.emit(REQUEST_SERVER_INFO);
-  return await new Promise((resolve, reject) =>
+  return new Promise((resolve, reject) =>
     socket.on(RECEIVE_SERVER_INFO, resolve),
   );
 };

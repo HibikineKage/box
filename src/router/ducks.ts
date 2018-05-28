@@ -24,26 +24,26 @@ const initialState: State = {
 export const reducer = (state: State = initialState, action: Action): State => {
   console.log(action);
   switch (action.type) {
-    case ADD_ROOM_SUCCEED:
-    case JOIN_ROOM:
-      console.log('matching');
-      return {
-        ...state,
-        currentScene: Scene.Matching,
-      };
-    case MATCH_ROOM_FAILED:
-    case JOIN_ROOM_FAILED:
-    case BACK_TO_LOBBY:
-      return {
-        ...state,
-        currentScene: Scene.Rooms,
-      };
-    case JOIN_ROOM_SUCCEED:
-    case MATCH_ROOM_SUCCEED:
-      return {
-        ...state,
-        currentScene: Scene.Game,
-      };
+  case ADD_ROOM_SUCCEED:
+  case JOIN_ROOM:
+    console.log('matching');
+    return {
+      ...state,
+      currentScene: Scene.Matching,
+    };
+  case MATCH_ROOM_FAILED:
+  case JOIN_ROOM_FAILED:
+  case BACK_TO_LOBBY:
+    return {
+      ...state,
+      currentScene: Scene.Rooms,
+    };
+  case JOIN_ROOM_SUCCEED:
+  case MATCH_ROOM_SUCCEED:
+    return {
+      ...state,
+      currentScene: Scene.Game,
+    };
   }
   return state;
 };

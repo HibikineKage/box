@@ -25,28 +25,29 @@ const initialState: State = {
 };
 const reducer = (state: State = initialState, action: Action) => {
   switch (action.type) {
-    case ADD_ROOM_SUCCEED:
-      return {
-        ...state,
-        status: MatchingStatus.Waiting,
-      };
-    case JOIN_ROOM:
-      return {
-        ...state,
-        status: MatchingStatus.Joining,
-      };
-    case MATCH_ROOM_FAILED:
-    case JOIN_ROOM_FAILED:
-      return {
-        ...state,
-        status: MatchingStatus.Default,
-      };
-    case MATCH_ROOM_TIMEOUT:
-      return {
-        ...state,
-        status: MatchingStatus.Timeout,
-      };
+  case ADD_ROOM_SUCCEED:
+    return {
+      ...state,
+      status: MatchingStatus.Waiting,
+    };
+  case JOIN_ROOM:
+    return {
+      ...state,
+      status: MatchingStatus.Joining,
+    };
+  case MATCH_ROOM_FAILED:
+  case JOIN_ROOM_FAILED:
+    return {
+      ...state,
+      status: MatchingStatus.Default,
+    };
+  case MATCH_ROOM_TIMEOUT:
+    return {
+      ...state,
+      status: MatchingStatus.Timeout,
+    };
+  default:
+    return state;
   }
-  return state;
 };
 export default reducer;
