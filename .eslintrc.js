@@ -26,7 +26,7 @@ module.exports = {
     'import/no-extraneous-dependencies': [2, {
       devDependencies: ['tests/**/*.js', 'tests/**/*.ts', '**/*.test.js', '**/*.test.ts', '**/*.test.jsx', '**/*.test.tsx']
     }],
-
+    'import/order': 2,
   },
   settings: {
     'import/resolver': 'webpack',
