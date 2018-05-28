@@ -9,8 +9,16 @@ import {
   ADD_ROOM_SUCCEED,
   LEAVE_ROOM
 } from '../rooms/ducks';
-import {JOIN_ROOM, JOIN_ROOM_FAILED, JOIN_ROOM_SUCCEED, DELETED_ROOM, MATCH_ROOM_TIMEOUT} from '../matching/ducks';
+import {
+  MATCH_ROOM,
+  JOIN_ROOM,
+  JOIN_ROOM_FAILED,
+  JOIN_ROOM_SUCCEED,
+  DELETED_ROOM,
+  MATCH_ROOM_TIMEOUT
+} from '../matching/ducks';
 import {nextRoomId} from './utils';
+
 import sha256 = require('crypto-js');
 dotenv.config({path: '.env'});
 const app = express();

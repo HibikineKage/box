@@ -4,7 +4,7 @@ import {ClientRoom} from '../server/app';
 import {resolve} from 'url';
 import {wait} from '../utils';
 
-export const matchUser = () => new Promise((resolve, reject) => {
+export const matchUser = () : Promise < ClientRoom > => new Promise((resolve, reject) => {
   socket.on(MATCH_ROOM_SUCCEED, (room : ClientRoom) => {
     resolve(room);
   });
@@ -18,4 +18,4 @@ export const matchUserTimeout = () : Promise < any > => {
     })),
     (3000)
   ]);
-}
+};
