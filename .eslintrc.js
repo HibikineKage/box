@@ -23,7 +23,10 @@ module.exports = {
     }],
     'no-console': 2,
     'import/prefer-default-export': 1,
-    'import/no-extraneous-dependencies': 1,
+    'import/no-extraneous-dependencies': [2, {
+      devDependencies: ['tests/**/*.js', 'tests/**/*.ts', '**/*.test.js', '**/*.test.ts', '**/*.test.jsx', '**/*.test.tsx']
+    }],
+
   },
   settings: {
     'import/resolver': 'webpack',

@@ -3,3 +3,5 @@ export const nextRoomId = (): number => {
   currentRoomId += 1;
   return currentRoomId;
 };
+
+export default nextRoomId;

@@ -9,3 +9,4 @@ export const fetchServerInfo = async () => {
     socket.on(RECEIVE_SERVER_INFO, resolve),
   );
 };
+export default fetchServerInfo;

@@ -1,6 +1,6 @@
-import { matchUser, matchUserTimeout } from './api';
 import { put, call, race, fork } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
+import { matchUser, matchUserTimeout } from './api';
 import {
   MATCH_ROOM_FAILED,
   MATCH_ROOM_SUCCEED,
@@ -14,7 +14,6 @@ export function* waitMatching() {
     timeout: call(delay, 1000),
   });
   if (timeout) {
-    console.log('timeout');
     matchUserTimeout();
     yield put({ type: MATCH_ROOM_TIMEOUT });
     yield fork(fetchRoomList);
@@ -23,3 +22,4 @@ export function* waitMatching() {
     yield put({ type: MATCH_ROOM_SUCCEED, payload: matching });
   }
 }
+export default waitMatching;
