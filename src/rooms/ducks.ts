@@ -1,5 +1,6 @@
 import { Action } from 'redux';
 import { ClientRoom } from '../server/app';
+
 export const REQUEST_ROOM_LIST = 'REQUEST_ROOM_LIST';
 export const RECEIVE_ROOM_LIST = 'RECEIVE_ROOM_LIST';
 export const ROOM_LIST_FETCH_FAILED = 'ROOM_LIST_FETCH_FAILED';

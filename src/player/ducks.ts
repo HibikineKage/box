@@ -1,4 +1,5 @@
 import { Action } from 'redux';
+
 export interface Player {
   x: number;
   y: number;
@@ -12,6 +13,4 @@ interface State {
 const initialState: State = {
   players: [],
 };
-export const reducer = (state: State = initialState, action: Action) => {
-  return state;
-};
+export const reducer = (state: State = initialState, action: Action) => state;

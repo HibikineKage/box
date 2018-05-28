@@ -31,9 +31,14 @@
     "coveralls": "^3.0.1",
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
+    "eslint-config-react": "^1.1.7",
     "eslint-loader": "^2.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-typescript": "^0.12.0",
     "file-loader": "^1.1.11",
     "jest": "^22.4.3",
@@ -78,7 +83,9 @@
     "start": "webpack --watch",
     "start-server": "webpack --config webpack.config.server.js --watch",
     "start-nodemon": "nodemon dist/server.js",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint src/**/*.ts src/**/*.tsx",
+    "format": "prettier src/**/*.ts src/**/*.tsx"
   },
   "jest": {
     "transform": {

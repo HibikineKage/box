@@ -2,6 +2,7 @@ import socket from '../app/socket';
 
 import { MATCH_ROOM_SUCCEED, MATCH_ROOM_TIMEOUT } from './ducks';
 import { ClientRoom } from '../server/app';
+
 export const matchUser = (): Promise<ClientRoom> =>
   new Promise((resolve, reject) => {
     socket.on(MATCH_ROOM_SUCCEED, (room: ClientRoom) => {

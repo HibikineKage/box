@@ -1,4 +1,4 @@
-import { fetchRoomList } from "./sagas";
+import { fetchRoomList } from './sagas';
 import { testRooms } from './__mocks__/api';
 
 test('fetchroomlist', () => {

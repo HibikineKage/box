@@ -30,7 +30,7 @@ export default class Button extends React.Component<Props, State> {
     return (
       <Sprite
         {...this.props}
-        interactive={true}
+        interactive
         mouseover={() => {
           this.setState({ buttonStatus: ButtonStatus.Hover });
         }}

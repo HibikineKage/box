@@ -16,10 +16,12 @@ import {
   JOIN_ROOM_SUCCEED,
 } from '../matching/ducks';
 import { nextRoomId } from './utils';
+
 import sha256 = require('crypto-js');
 dotenv.config({ path: '.env' });
 const app = express();
 const http = require('http').Server(app);
+
 const io = socketIO(http, { origins: 'localhost:*' });
 
 export enum RoomStatus {
@@ -97,7 +99,7 @@ io.on('connection', (socket: socketIO.Socket) => {
     }
     rooms.push({
       name: roomName,
-      host: host,
+      host,
       isPrivate,
       status: RoomStatus.Matching,
       players: [host],

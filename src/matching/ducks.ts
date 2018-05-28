@@ -1,5 +1,6 @@
 import { Action } from 'redux';
 import { ADD_ROOM_SUCCEED } from '../rooms/ducks';
+
 export const MATCH_ROOM_SUCCEED = 'MATCH_ROOM_SUCCEED';
 export const MATCH_ROOM_FAILED = 'MATCH_ROOM_FAILED';
 export const MATCH_ROOM = 'MATCH_ROOM';
