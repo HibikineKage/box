@@ -1,10 +1,12 @@
-# React Boilerplate
+# Box
 
-Hibikine Kage's React Boilderplate
+[![Build Status](https://travis-ci.org/HibikineKage/box.svg?branch=master)](https://travis-ci.org/HibikineKage/box)
+
+An real time action game.
 
 ## Requirements
 
-* yarn
+- yarn
 
 ## Development
 
@@ -14,10 +16,11 @@ yarn start
 
 ## Stack
 
-* React
-* Babel
-* Sass
-* Webpack V4
-* TypeScript
-* ESLint
-* Prettier
+- React Pixi Fiber
+- React
+- Babel
+- Sass
+- Webpack V4
+- TypeScript
+- ESLint
+- Prettier
