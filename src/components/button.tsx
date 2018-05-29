@@ -19,18 +19,17 @@ interface State {
   buttonStatus: ButtonStatus;
 }
 export default class Button extends React.Component<Props, State> {
-  state: State;
-
   constructor(props: Props) {
     super(props);
     this.state = { buttonStatus: ButtonStatus.Default };
   }
+  state: State;
 
   render() {
     return (
       <Sprite
         {...this.props}
-        interactive={true}
+        interactive
         mouseover={() => {
           this.setState({ buttonStatus: ButtonStatus.Hover });
         }}

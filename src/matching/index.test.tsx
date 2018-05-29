@@ -1,19 +1,22 @@
 import * as React from 'react';
-import {Props, Matching} from './index';
 import * as renderer from 'react-test-renderer';
-import {MatchingStatus} from './ducks';
+import { Props, Matching } from './index';
+import { MatchingStatus } from './ducks';
+
 describe('Matching returns ', () => {
   const mockBackToLobby = jest.fn();
-  const props : Props = {
+  const props: Props = {
     matchingStatus: MatchingStatus.Default,
-    backToLobby: mockBackToLobby
+    backToLobby: mockBackToLobby,
   };
   test('matching scene', () => {
-    const tree = renderer.create(<Matching {...props}/>);
+    const tree = renderer.create(<Matching {...props} />);
     expect(tree.toJSON).toMatchSnapshot();
   });
   test('timeout', () => {
-    const tree = renderer.create(<Matching {...props} matchingStatus={MatchingStatus.Timeout}/>);
+    const tree = renderer.create(
+      <Matching {...props} matchingStatus={MatchingStatus.Timeout} />,
+    );
     expect(tree.toJSON()).toMatchSnapshot();
-  })
+  });
 });

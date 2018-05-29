@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+
 export interface Props {
   children: React.ReactElement<any>;
 }
