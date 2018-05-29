@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 import { Rooms, Props } from './index';
-import { RoomStatus } from '../server/app';
+import { RoomStatus } from '../server/rooms';
 
 test('rendering', () => {
   const props: Props = {

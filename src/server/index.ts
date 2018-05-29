@@ -1,11 +1,12 @@
 /* eslint no-console: 0 */
-import app from './app';
+import App from './app';
 
-const server = app.listen(app.get('port'), () => {
+const serverApp = new App();
+const server = serverApp.app.listen(serverApp.app.get('port'), () => {
   console.log(
     '  App is running at http://localhost:%d in %s mode',
-    app.get('port'),
-    app.get('env'),
+    serverApp.app.get('port'),
+    serverApp.app.get('env'),
   );
   console.log('  Press CTRL_C to stop\n');
 });

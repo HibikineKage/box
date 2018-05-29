@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
-import { Props, Matching } from './index';
 import { MatchingStatus } from './ducks';
+import { Props, Matching } from './index';
 
 describe('Matching returns ', () => {
   const mockBackToLobby = jest.fn();

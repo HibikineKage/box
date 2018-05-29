@@ -10,7 +10,6 @@ import {
   ADD_ROOM_SUCCEED,
   LEAVE_ROOM,
 } from '../rooms/ducks';
-import { nextRoomId } from './utils';
 import {
   MATCH_ROOM,
   JOIN_ROOM,
@@ -19,28 +18,16 @@ import {
   DELETED_ROOM,
   MATCH_ROOM_TIMEOUT,
 } from '../matching/ducks';
+import { nextRoomId } from './utils';
+import { Server } from 'http';
+import setHeader from './header';
+import Users, { User } from './users';
+import { CONNECTION_EXPIRED_ERROR } from './errors';
+import Rooms, { Room, RoomStatus } from './rooms';
 
 dotenv.config({ path: '.env' });
 const app = express();
-const http = require('http').Server(app);
-
-const io = socketIO(http, { origins: 'localhost:*' });
-
-export enum RoomStatus {
-  Waiting = 'Waiting',
-  Matching = 'Matching',
-  Playing = 'Playing',
-}
-
-export interface Room {
-  name: string;
-  host: User;
-  isPrivate: boolean;
-  status: RoomStatus;
-  players: User[];
-  watchers: User[];
-  roomId: number;
-}
+const http = require('http');
 
 export interface ClientRoom {
   name: string;
@@ -49,15 +36,6 @@ export interface ClientRoom {
   status: RoomStatus;
   roomId: number;
 }
-let rooms: Room[] = [];
-
-export interface User {
-  name: string;
-  socketId: string;
-}
-
-const waintingUsers: User[] = [];
-let users: User[] = [];
 
 const roomToClientRoom = (room: Room): ClientRoom => ({
   name: room.name,
@@ -67,97 +45,106 @@ const roomToClientRoom = (room: Room): ClientRoom => ({
   roomId: room.roomId,
 });
 
-const getRoomList = (): ClientRoom[] => rooms.map(roomToClientRoom);
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'localhost:*');
-  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  next();
-});
-app.use(express.static('public'));
-app.set('port', process.env.PORT || 3030);
-console.log(`port set to ${process.env.PORT || 3030}`);
+export default class App {
+  app: express.Express;
+  http: Server;
+  io: SocketIO.Server;
+  waitintgUsers: User[] = [];
+  users: User[] = new Users();
+  rooms: Room[] = new Rooms();
+  constructor() {
+    this.app = express();
+    this.http = http.Server(app);
+    this.io = socketIO(http, { origins: 'localhost:*' });
+    this.app.use(setHeader);
+    this.app.use(express.static('public'));
+    this.app.set('port', process.env.PORT || 3030);
+    console.log(`port set to ${process.env.PORT || 3030}`);
 
-export const CONNECTION_EXPIRED_ERROR = 'CONNECTION_EXPIRED_ERROR';
-const getUser = (socketId: string): User | undefined =>
-  users.find(user => user.socketId === socketId);
-io.on('connection', (socket: socketIO.Socket) => {
-  console.log('connected');
-  users.push({ name: 'ななしちゃん', socketId: socket.client.id });
-
-  socket.on(REQUEST_ROOM_LIST, () => {
-    console.log('server room list requested');
-    socket.emit(RECEIVE_ROOM_LIST, getRoomList());
-  });
-
-  socket.on(ADD_ROOM, ({ roomName, isPrivate }: CreateRoom) => {
-    console.log('add new room');
-    const host = getUser(socket.client.id);
-    if (host === undefined) {
-      socket.emit(CONNECTION_EXPIRED_ERROR);
-      return;
-    }
-    rooms.push({
-      name: roomName,
-      host,
-      isPrivate,
-      status: RoomStatus.Matching,
-      players: [host],
-      watchers: [],
-      roomId: nextRoomId(),
+    this.http.listen(this.app.get('port'), () => {
+      console.log(`listening on *:${app.get('port')}`);
     });
-    console.log(rooms);
-    socket.emit(ADD_ROOM_SUCCEED);
-  });
 
-  socket.on(MATCH_ROOM_TIMEOUT, () => {
-    rooms = rooms.filter(room => room.host.socketId !== socket.client.id);
-    socket.emit(DELETED_ROOM);
-  });
+    this.io.on('connection', (socket: socketIO.Socket) => {
+      console.log('connected');
+      this.users.push({ name: 'ななしちゃん', socketId: socket.client.id });
 
-  socket.on(JOIN_ROOM, (joinRoom: ClientRoom) => {
-    const selectedRoom = rooms.find(room => {
-      if (room.name !== joinRoom.name) {
-        return false;
-      }
-      if (room.host.name !== joinRoom.hostName) {
-        return false;
-      }
-      if (room.isPrivate !== joinRoom.isPrivate) {
-        return false;
-      }
-      if (room.roomId !== joinRoom.roomId) {
-        return false;
-      }
-      if (room.players.length > 1) {
-        return false;
-      }
-      return true;
+      socket.on(REQUEST_ROOM_LIST, () => {
+        console.log('server room list requested');
+        socket.emit(RECEIVE_ROOM_LIST, this.getRoomList());
+      });
+
+      socket.on(ADD_ROOM, ({ roomName, isPrivate }: CreateRoom) => {
+        console.log('add new room');
+        const host = this.getUser(socket.client.id);
+        if (host === undefined) {
+          socket.emit(CONNECTION_EXPIRED_ERROR);
+          return;
+        }
+        this.rooms.push({
+          name: roomName,
+          host,
+          isPrivate,
+          status: RoomStatus.Matching,
+          players: [host],
+          watchers: [],
+          roomId: nextRoomId(),
+        });
+        socket.emit(ADD_ROOM_SUCCEED);
+      });
+
+      socket.on(MATCH_ROOM_TIMEOUT, () => {
+        this.rooms = this.rooms.filter(room => room.host.socketId !== socket.client.id);
+        socket.emit(DELETED_ROOM);
+      });
+
+      socket.on(JOIN_ROOM, (joinRoom: ClientRoom) => {
+        const selectedRoom = this.rooms.find(room => {
+          if (room.name !== joinRoom.name) {
+            return false;
+          }
+          if (room.host.name !== joinRoom.hostName) {
+            return false;
+          }
+          if (room.isPrivate !== joinRoom.isPrivate) {
+            return false;
+          }
+          if (room.roomId !== joinRoom.roomId) {
+            return false;
+          }
+          if (room.players.length > 1) {
+            return false;
+          }
+          return true;
+        });
+        if (selectedRoom === undefined) {
+          socket.emit(JOIN_ROOM_FAILED);
+          return;
+        }
+
+        const user = this.getUser(socket.client.id);
+        if (user === undefined) {
+          socket.emit(CONNECTION_EXPIRED_ERROR);
+          return;
+        }
+        selectedRoom.players.push(user);
+        socket.emit(JOIN_ROOM_SUCCEED, selectedRoom);
+      });
+
+      socket.on('disconnect', () => {
+        console.log('user disconnected.');
+        this.users = this.users.filter(user => user.socketId !== socket.client.id);
+        this.rooms = this.rooms.filter(room => room.host.socketId !== socket.client.id);
+      });
     });
-    if (selectedRoom === undefined) {
-      socket.emit(JOIN_ROOM_FAILED);
-      return;
-    }
+  }
+  getRoomList(): ClientRoom[] {
+    return this.rooms.map(roomToClientRoom);
+  }
+  getUser(socketId: string): User | undefined {
+    return this.users.find(user => user.socketId === socketId);
+  }
+}
 
-    const user = getUser(socket.client.id);
-    if (user === undefined) {
-      socket.emit(CONNECTION_EXPIRED_ERROR);
-      return;
-    }
-    selectedRoom.players.push(user);
-    socket.emit(JOIN_ROOM_SUCCEED, selectedRoom);
-  });
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected.');
-    users = users.filter(user => user.socketId !== socket.client.id);
-    rooms = rooms.filter(room => room.host.socketId !== socket.client.id);
-  });
-});
-http.listen(app.get('port'), () => {
-  console.log(`listening on *:${app.get('port')}`);
-});
-
-export default app;
