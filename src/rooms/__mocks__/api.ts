@@ -1,4 +1,5 @@
-import { ClientRoom, RoomStatus } from '../../server/app';
+import { ClientRoom} from '../../server/app';
+import { RoomStatus } from '../../server/rooms';
 
 export const testRooms: ClientRoom[] = [
   {
