@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rendering 1`] = `
+<div>
+  <h1>
+    Lobby
+  </h1>
+  <section>
+    <h2>
+      Room List
+    </h2>
+    <p>
+      <button
+        onClick={[Function]}
+      >
+        Test Room 1
+      </button>
+    </p>
+    <p>
+      <button
+        onClick={[Function]}
+      >
+        Test Room 2
+      </button>
+    </p>
+    <p>
+      <button
+        onClick={[Function]}
+      >
+        Test Room
+      </button>
+    </p>
+  </section>
+  <div>
+    <button
+      onClick={[Function]}
+    >
+      部屋を追加する
+    </button>
+    <input
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+  </div>
+  <div>
+    <button
+      onClick={[Function]}
+    >
+      CPU Battle
+    </button>
+  </div>
+</div>
+`;

@@ -1,10 +1,12 @@
 import { fetchRoomList } from './sagas';
-import { testRooms } from './__mocks__/api';
+import * as Api from './api';
+import { call } from 'redux-saga/effects';
 
 test('fetchroomlist', () => {
   const fetching = fetchRoomList();
   const fetched = fetching.next();
-  expect(fetched.value).toEqual(testRooms);
+  expect(fetched.value).toEqual(call(Api.fetchRoomList));
   const setRoomListAction = fetching.next();
-  expect(setRoomListAction.done).toBe(true);
+  const allDone = fetching.next();
+  expect(allDone.done).toBe(true);
 });

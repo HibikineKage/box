@@ -10,14 +10,14 @@ import AddRoom from './add-room';
 import Cpu from './cpu';
 import { Room } from './room';
 
-interface Props {
+export interface Props {
   fetchRoomList: () => any;
   rooms: ClientRoom[];
   addRoom: (roomName: string) => any;
   startCpuBattle: () => any;
 }
 
-class Rooms extends React.Component<Props> {
+export class Rooms extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     socket.on('connect', () => {
