@@ -5,6 +5,7 @@ module.exports = {
     sourceType: "module",
     ecmaVersion: 2018,
     ecmaFeatures: {
+      modules: true,
       jsx: true
     }
   },
@@ -26,9 +27,16 @@ module.exports = {
     'import/no-extraneous-dependencies': [2, {
       devDependencies: ['tests/**/*.js', 'tests/**/*.ts', '**/*.test.js', '**/*.test.ts', '**/*.test.jsx', '**/*.test.tsx']
     }],
+    'import/no-unresolved': 2,
     'import/order': 2,
   },
   settings: {
-    'import/resolver': 'webpack',
+    'import/resolver': {
+      node: {
+        extensions: [
+          '.js', '.jsx', '.ts', '.tsx'
+        ]
+      }
+    },
   }
 };
