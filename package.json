@@ -82,34 +82,23 @@
     "uws": "^10.148.0"
   },
   "scripts": {
-    "start": "webpack --watch",
-    "start-server": "webpack --config webpack.config.server.js --watch",
+    "start": "webpack",
     "start-nodemon": "nodemon dist/server.js",
     "test": "jest",
     "lint": "eslint src/**/*.ts src/**/*.tsx",
-    "format": "prettier src/**/*.ts src/**/*.tsx"
+    "format": "prettier src/**/*.ts src/**/*.tsx",
+    "build": "webpack --config webpack.config.production.js"
   },
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "setupFiles": [
-      "./tests/jest.setup-pixi.ts"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+    "setupFiles": ["./tests/jest.setup-pixi.ts"],
     "globals": {
       "__DEV__": true
     },
-    "collectCoverageFrom": [
-      "src/**/*.tsx?$"
-    ]
+    "collectCoverageFrom": ["src/**/*.tsx?$"]
   }
 }

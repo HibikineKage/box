@@ -1,7 +1,8 @@
 const PrettierPlugin = require('prettier-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 
-module.exports = {
+const baseConfig = {
   entry: path.join(__dirname, 'src', 'index.tsx'),
   output: {
     path: path.resolve(__dirname, 'public', 'dist'),
@@ -27,7 +28,7 @@ module.exports = {
               limit: 10000,
               name: 'static/media/[name].[hash:8].[ext]',
             },
-          }, ],
+          },],
         },
         {
           /* JavaScript */
@@ -38,14 +39,14 @@ module.exports = {
             options: {
               cacheDirectory: true,
             },
-          }, ],
+          },],
         },
         /* TypeScript */
         {
           test: /\.tsx?$/,
           use: [{
             loader: 'ts-loader',
-          }, ],
+          },],
           exclude: /node_modules/,
         },
         /* SASS */
@@ -70,7 +71,7 @@ module.exports = {
           exclude: /node_modules/,
         },
       ],
-    }, ],
+    },],
   },
   resolve: {
     extensions: [
@@ -86,3 +87,37 @@ module.exports = {
     ],
   },
 };
+const serverConfig = {
+  ...baseConfig,
+  target: 'node',
+  watch: true,
+  watchOptions: {
+    poll: true,
+  },
+  node: {
+    fs: 'empty',
+  },
+  externals: [nodeExternals()],
+  entry: path.resolve(__dirname, 'src/server/index.ts'),
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'server.js',
+  },
+  module: {
+    rules: [
+      {
+        oneOf: [
+          {
+            test: /\.ts$/,
+            loader: 'ts-loader',
+            exclude: /node_modules/,
+            options: {
+              configFile: 'tsconfig.server.json',
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+module.exports = [baseConfig, serverConfig];
