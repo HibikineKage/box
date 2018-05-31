@@ -7,9 +7,10 @@ export interface Player {
   isJumping: boolean;
   isFacingRight: boolean;
 }
-interface State {
+export interface State {
   players: Player[];
 }
+
 const initialState: State = {
   players: [],
 };

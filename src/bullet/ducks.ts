@@ -1,10 +1,10 @@
 import { Action } from 'redux';
 import { Player } from '../player/ducks';
 
-interface Bullet {
+export interface Bullet {
   player: Player;
 }
-interface State {
+export interface State {
   bullets: Bullet[];
 }
 const initialState = { bullets: [] };
