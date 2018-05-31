@@ -1,3 +1,8 @@
+import actionCreatorFactory from 'typescript-fsa';
+import { Action } from 'redux';
+
+const actionCreator = actionCreatorFactory();
+export const gameTick = actionCreator('GAME_TICK');
 export const START_GAME = 'START_GAME';
 export const COUNT_DOWN = 'COUNT_DOWN';
 export const INITIAL_COUNT = 5;
@@ -15,16 +20,16 @@ export interface State {
 
 const initialState = {
   status: GameStatus.NotStarting,
-  countDownNumber: 0;
-}
+  countDownNumber: 0,
+};
 
 export const reducer = (state: State = initialState, action: Action) => {
-  switch(action.type) {
+  switch (action.type) {
     case START_GAME:
       return {
         ...state,
-        status: GameStatus.InitializeWaiting
-        countDownNumber: INITIAL_COUNT;
+        status: GameStatus.InitializeWaiting,
+        countDownNumber: INITIAL_COUNT,
       };
     case COUNT_DOWN:
       return {
@@ -34,6 +39,6 @@ export const reducer = (state: State = initialState, action: Action) => {
     default:
       return state;
   }
-}
+};
 
 export default reducer;
