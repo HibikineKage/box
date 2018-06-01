@@ -1,4 +1,5 @@
 import { User } from './users';
+
 export interface Room {
   name: string;
   host: User;
@@ -15,6 +16,4 @@ export enum RoomStatus {
   Playing = 'Playing',
 }
 
-export default class Rooms extends Array<Room> {
-
-}
+export default class Rooms extends Array<Room> {}

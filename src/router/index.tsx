@@ -1,11 +1,11 @@
 import { Container, Text } from 'react-pixi-fiber';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Scene } from './ducks';
 import { State } from '../ducks';
 import Rooms from '../rooms/index';
 import Game from '../game/index';
 import Matching from '../matching/index';
+import { Scene } from './ducks';
 
 interface Props {
   currentScene: Scene;
