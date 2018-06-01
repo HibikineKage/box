@@ -6,8 +6,8 @@ import { Action } from 'redux';
 import { actionCreatorFactory, isType } from 'typescript-fsa';
 import { matchRoomSucceed, joinRoomSucceed } from '../matching/ducks';
 import { ClientRoom } from '../server/app';
-import Player from '../player/index';
 const actionCreator = actionCreatorFactory();
+export const gameTick = actionCreator('GAME_TICK');
 export const START_GAME = 'START_GAME';
 export const startGame = actionCreator(START_GAME);
 export const COUNT_DOWN = 'COUNT_DOWN';
@@ -37,11 +37,12 @@ const initialState = {
   boxes: [],
   walls: [],
   bullets: [],
-}
+};
 
 const initPlayer = (room: ClientRoom): Player[] => {
-  return [{ x: 50, y: 50, name: room.hostName }, { x: 50, y: 50, name: room.hostName }]
-}
+  return [{ x: 50, y: 50, name: room.hostName }, { x: 50, y: 50, name: room.hostName }];
+};
+
 export const reducer = (state: State = initialState, action: Action) => {
   if (isType(action, matchRoomSucceed) || isType(action, joinRoomSucceed)) {
     return {
@@ -62,6 +63,6 @@ export const reducer = (state: State = initialState, action: Action) => {
       countDownNumber: state.countDownNumber - 1,
     };
   }
-}
+};
 
 export default reducer;
