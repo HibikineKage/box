@@ -1,7 +1,7 @@
+import { Action } from 'redux';
 import socket from '../app/socket';
 import { MATCH_ROOM_SUCCEED, MATCH_ROOM_TIMEOUT, DELETED_ROOM } from './ducks';
 import { ClientRoom } from '../server/app';
-import { resolve } from 'url';
 import { wait } from '../utils';
 
 export const matchUser = (): Promise<ClientRoom> =>
@@ -19,6 +19,16 @@ export const matchUserTimeout = (): Promise<any> => {
         resolve();
       }),
     ),
-    3000,
+    wait(3000),
   ]);
 };
+
+export const joinRoom = (room: ClientRoom): Promise<ClientRoom | Action> => {
+  const race: Promise<ClientRoom | Action | null> = Promise.race([
+    new Promise(resolve => socket.on(JOIN_ROOM_SUCCEED, resolve)),
+    new Promise(resolve => socket.on(JOIN_ROOM_FAILED, resolve)),
+  ]);
+  socket.emit(JOIN_ROOM, room);
+  return race;
+}
+

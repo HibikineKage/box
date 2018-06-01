@@ -1,9 +1,19 @@
 import * as React from 'react';
-import { Sprite } from 'react-pixi-fiber';
-
-export interface Props {
+import { connect } from 'react-redux';
+import { Sprite, Container } from 'react-pixi-fiber';
+import { State } from '../ducks';
+import * as box from './box.png';
+interface BoxProps {
   x: number;
   y: number;
 }
-export const Box = (props: Props) => <Sprite />;
-export default Box;
+export interface Props {
+  boxes: BoxProps[];
+}
+const boxTexture = PIXI.Texture.fromImage(box);
+export const Boxes = (props: Props) => (
+  <Container>
+    <Sprite texture={boxTexture} />
+  </Container>
+);
+export default connect((state: State) => ({ boxes: state.box.boxes }), null, stateProps => ({...stateProps}))(Boxes);
