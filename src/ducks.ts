@@ -4,18 +4,14 @@ import bullet, { State as BulletState } from './bullet/ducks';
 import router, { State as RouterState } from './router/ducks';
 import rooms, { State as RoomsState } from './rooms/ducks';
 import matching, { State as MatchingState } from './matching/ducks';
-import players, { State as PlayerState } from './player/ducks';
-import walls, { State as WallsState } from './walls/ducks';
+import game, { State as GameState } from './game/ducks';
 
 export interface State {
   app: AppState;
-  box: BoxState;
-  bullet: BulletState;
+  game: GameState;
   router: RouterState;
   rooms: RoomsState;
   matching: MatchingState;
-  players: PlayerState;
-  walls: WallsState;
 }
 
-export default combineReducers({ app, box, bullet, router, rooms, matching, walls });
+export default combineReducers({ app, router, rooms, matching });

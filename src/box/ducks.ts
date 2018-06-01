@@ -1,7 +1,12 @@
+import { actionCreatorFactory } from 'typescript-fsa';
 import { Action } from 'redux';
 import { Player } from '../player/ducks';
 
+const actionCreator = actionCreatorFactory();
 export const ADD_BOX = 'ADD_BOX';
+export const addBox = actionCreator<{ x: number; y: number; playerId: string }>(
+  ADD_BOX,
+);
 export interface AddBoxPayload {
   x: number;
   y: number;
@@ -23,20 +28,3 @@ export interface Box {
   x: number;
   y: number;
 }
-export interface State {
-  boxes: Box[];
-}
-const initialState: State = { boxes: [] };
-export const reducer = (state: State = initialState, action: Action) => {
-  switch (action.type) {
-  case ADD_BOX:
-    return {
-      ...state,
-      boxes: [...state.boxes, initBox(action.payload)],
-    };
-  case REMOVE_BOX:
-  default:
-    return state;
-  }
-};
-export default reducer;
