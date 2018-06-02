@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Sprite, Container } from 'react-pixi-fiber';
 import { State } from '../ducks';
 import * as box from './box.png';
+
 interface BoxProps {
   x: number;
   y: number;
@@ -16,4 +17,11 @@ export const Boxes = (props: Props) => (
     <Sprite texture={boxTexture} />
   </Container>
 );
-export default connect((state: State) => ({ boxes: state.box.boxes }), null, stateProps => ({...stateProps}))(Boxes);
+export default connect(
+  (state: State) => ({ boxes: state.game.boxes }),
+  null,
+  (stateProps, dispatchProps, ownProps) => ({
+    ...ownProps,
+    ...stateProps,
+  }),
+)(Boxes);

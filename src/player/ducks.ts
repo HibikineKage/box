@@ -8,7 +8,7 @@ export const jump = actionCreator<{ playerId: string; jumpPower: number }>(
 );
 export const JUMP_CONSTANT = 1.0;
 
-export interface Player {
+export interface IPlayer {
   x: number;
   y: number;
   vy: number;
@@ -18,41 +18,14 @@ export interface Player {
   playerId: string;
 }
 export interface State {
-  players: Player[];
+  players: IPlayer[];
 }
 
 const applyTargetUser = (
-  players: Player[],
+  players: IPlayer[],
   playerId: string,
-  callback: (player: Player) => Player,
+  callback: (player: IPlayer) => IPlayer,
 ) =>
   players.map(
     player => (player.playerId === playerId ? callback(player) : player),
   );
-
-const initialState: State = {
-  players: [],
-};
-
-export const reducer = (state: State = initialState, action: Action) => {
-  if (isType(action, jump)) {
-    return {
-      ...state,
-      players: applyTargetUser(
-        state.players,
-        action.payload.playerId,
-        player => ({
-          ...player,
-          isJumping: true,
-          vy: action.payload.jumpPower * JUMP_CONSTANT,
-        }),
-      ),
-    };
-  }
-  if (isType(action, gameTick)) {
-    return {
-      ...state,
-      players: state.players.map(applyGravity).map(applyMove);
-    }
-  }
-};

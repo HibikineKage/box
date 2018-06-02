@@ -41,8 +41,6 @@ module.exports = {
       },
     ],
     'import/no-unresolved': 2,
-    'import/order': 2,
-    prettier: 2,
   },
   settings: {
     'import/resolver': {

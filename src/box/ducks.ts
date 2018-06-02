@@ -1,6 +1,6 @@
 import { actionCreatorFactory } from 'typescript-fsa';
 import { Action } from 'redux';
-import { Player } from '../player/ducks';
+import { IPlayer } from '../player/ducks';
 
 const actionCreator = actionCreatorFactory();
 export const ADD_BOX = 'ADD_BOX';
@@ -10,7 +10,7 @@ export const addBox = actionCreator<{ x: number; y: number; playerId: string }>(
 export interface AddBoxPayload {
   x: number;
   y: number;
-  player: Player;
+  player: IPlayer;
 }
 export interface AddBoxAction extends Action {
   payload: AddBoxPayload;
@@ -22,7 +22,7 @@ const initBox = (addBoxPayload: AddBoxPayload): Box => ({
 });
 export const REMOVE_BOX = 'REMOVE_BOX';
 export interface Box {
-  player: Player;
+  player: IPlayer;
   isFalling: boolean;
   isAlive: boolean;
   x: number;

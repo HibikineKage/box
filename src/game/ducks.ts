@@ -1,11 +1,12 @@
-import { Player } from '../player/ducks';
+import { Action } from 'redux';
+import { actionCreatorFactory, isType } from 'typescript-fsa';
+import { IPlayer } from '../player/ducks';
 import { Box } from '../box/ducks';
 import { Wall } from '../walls/ducks';
 import { Bullet } from '../bullet/ducks';
-import { Action } from 'redux';
-import { actionCreatorFactory, isType } from 'typescript-fsa';
 import { matchRoomSucceed, joinRoomSucceed } from '../matching/ducks';
 import { ClientRoom } from '../server/app';
+
 const actionCreator = actionCreatorFactory();
 export const gameTick = actionCreator('GAME_TICK');
 export const START_GAME = 'START_GAME';
@@ -24,7 +25,7 @@ export enum GameStatus {
 export interface State {
   status: GameStatus;
   countDownNumber: number;
-  players: Player[];
+  players: IPlayer[];
   boxes: Box[];
   walls: Wall[];
   bullets: Bullet[];
@@ -39,23 +40,40 @@ const initialState = {
   bullets: [],
 };
 
-const initPlayer = (room: ClientRoom): Player[] => {
-  return [{ x: 50, y: 50, name: room.hostName }, { x: 50, y: 50, name: room.hostName }];
-};
+const createPlayer = (
+  x: number,
+  y: number,
+  playerId: string,
+  isFacingRight: boolean = false,
+  name: string = 'hoge',
+): IPlayer => ({
+  x,
+  y,
+  playerId,
+  name,
+  isFacingRight,
+  isJumping: false,
+  vy: 0,
+});
+
+const initPlayer = (room: ClientRoom): IPlayer[] => [
+  createPlayer(100, 500, '1'),
+  createPlayer(900, 500, '2'),
+];
 
 export const reducer = (state: State = initialState, action: Action) => {
   if (isType(action, matchRoomSucceed) || isType(action, joinRoomSucceed)) {
     return {
       ...state,
-      players: initPlayer(matchRoomSucceed),
-    }
+      players: initPlayer(action.payload),
+    };
   }
   if (isType(action, startGame)) {
     return {
       ...state,
       status: GameStatus.InitializeWaiting,
       countDownNumber: INITIAL_COUNT,
-    }
+    };
   }
   if (isType(countDown, action.type)) {
     return {
