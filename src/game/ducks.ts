@@ -26,12 +26,14 @@ export interface State {
   status: GameStatus;
   countDownNumber: number;
   players: IPlayer[];
+  actionLog: Action[];
 }
 
 const initialState = {
   status: GameStatus.NotStarting,
   countDownNumber: 0,
   players: [],
+  actionLog: [],
 };
 
 const initPlayer = (room: ClientRoom): IPlayer[] => [

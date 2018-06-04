@@ -14,3 +14,10 @@ export const setIfDef = <T, K extends keyof T>(obj: T, key: K, value?: T[K]) => 
   }
   return obj;
 };
+
+export const applyN = <T>(v: T, func: T => T, n: number) => {
+  for (let i = 0; i < n; i += 1) {
+    v = func(v);
+  }
+  return v;
+};
