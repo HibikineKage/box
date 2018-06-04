@@ -2,5 +2,8 @@ import { Action } from 'redux';
 import { IPlayer } from '../player/ducks';
 
 export interface Bullet {
-  player: IPlayer;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
 }
