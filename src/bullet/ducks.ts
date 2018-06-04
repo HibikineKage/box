@@ -2,6 +2,7 @@ import { Action } from 'redux';
 import { IPlayer } from '../player/ducks';
 import { setIfDef } from '../utils';
 
+export const BULLET_R = 30;
 export const BULLET_GRAVITY = 0.98;
 export const BULLET_MAX_COUNT = 1;
 export const updateBullet = (b: IBullet): IBullet => ({ x: b.x + b.vx, y: b.y + b.vy, vx: b.vx, vy: b.vy + BULLET_GRAVITY });

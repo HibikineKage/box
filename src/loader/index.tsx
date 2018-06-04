@@ -1,16 +1,15 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-interface Props {}
+interface Props { loadFiles: string[] }
 
-export class Loader extends React.Component<Props> {
+export default class Loader extends React.Component<Props> {
+  state = { isLoaded: false };
   componentDidMount() {
-    this.props.
+    PIXI.loader.add(this.props.loadFiles);
+    PIXI.loader.onLoad.add(() => this.setState({ isLoaded: true }));
   }
   render() {
-    <div>this.props.children</div>
+    return this.state.isLoaded ? this.props.children : (<div>Loading</div>);
   }
 }
-
-export default connect()(Loader);
-

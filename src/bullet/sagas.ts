@@ -1,12 +1,6 @@
 import { Action } from 'redux';
-import { IBullet } from './ducks';
+import { IBullet, BULLET_R } from './ducks';
 import { State } from '../ducks';
 
-const isAlive = (bullet: IBullet) => true;
-const selectBullet = (state: State) => state.game.bullets;
-export function* bulletSaga(action: Action<IBullet>) {
-  const bulletId = action.payload.id;
-  while (true) {
-    const bulletState = yield select(selectBullet);
-  }
-}
+
+export const isAlive = (bullet: IBullet) => 0 - BULLET_R < bullet.x && bullet.x < 1000 + BULLET_R && 0 - BULLET_R < bullet.y && bullet.y < 1000 + BULLET_R;

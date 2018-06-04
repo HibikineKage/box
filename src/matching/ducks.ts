@@ -18,6 +18,9 @@ export const DELETED_ROOM = 'DELETED_ROOM';
 export interface MatchingUser {
   name: string;
 }
+export interface JoinRoomAction extends Action {
+  payload: ClientRoom
+}
 export enum MatchingStatus {
   Default = 'DEFAULT',
   Waiting = 'WAITING',

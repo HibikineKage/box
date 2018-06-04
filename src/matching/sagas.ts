@@ -2,6 +2,7 @@ import { delay } from 'redux-saga';
 import { put, call, race, fork } from 'redux-saga/effects';
 import { fetchRoomList } from '../rooms/sagas';
 import * as Api from './api';
+import { JoinRoomAction } from './ducks';
 import {
   MATCH_ROOM_FAILED,
   MATCH_ROOM_SUCCEED,
@@ -11,7 +12,7 @@ import {
   JOIN_ROOM_TIMEOUT,
 } from './ducks';
 
-export function* joinRoom(action: Action) {
+export function* joinRoom(action: JoinRoomAction) {
   try {
     const { joining, timeout } = yield race({
       joining: call(Api.joinRoom, action.payload),
