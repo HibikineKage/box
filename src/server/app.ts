@@ -28,6 +28,7 @@ import Rooms, { Room, RoomStatus } from './rooms';
 dotenv.config({ path: '.env' });
 const app = express();
 const http = require('http');
+const path = require('path');
 
 export interface ClientRoom {
   name: string;
@@ -58,7 +59,7 @@ export default class App {
     this.http = http.Server(app);
     this.io = socketIO(http, { origins: 'localhost:*' });
     this.app.use(setHeader);
-    this.app.use(express.static('public'));
+    this.app.use(express.static(path.resolve('public')));
     this.app.set('port', process.env.PORT || 3030);
     console.log(`port set to ${process.env.PORT || 3030}`);
 
