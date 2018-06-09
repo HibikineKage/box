@@ -27,7 +27,6 @@ import { CONNECTION_EXPIRED_ERROR } from './errors';
 import Rooms, { Room, RoomStatus } from './rooms';
 
 dotenv.config({ path: '.env' });
-const http = require('http');
 
 export interface ClientRoom {
   name: string;
@@ -54,8 +53,8 @@ export default class App {
   rooms: Room[] = new Rooms();
   constructor() {
     this.app = express();
-    this.http = http.Server(this.app);
-    this.io = socketIO(http, { origins: 'localhost:*' });
+    this.http = new Server(this.app);
+    this.io = socketIO(this.http, { origins: 'localhost:*' });
     this.app.use(setHeader);
     this.app.use('/', express.static(path.resolve('public')));
     this.app.set('port', process.env.PORT || 3030);
