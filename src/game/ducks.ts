@@ -1,9 +1,9 @@
 import { Action } from 'redux';
 import { actionCreatorFactory, isType } from 'typescript-fsa';
-import { IPlayer } from '../player/ducks';
+import { IPlayer, Player, updatePlayer } from '../player/ducks';
 import { Box } from '../box/ducks';
 import { Wall } from '../walls/ducks';
-import { Bullet } from '../bullet/ducks';
+import { IBullet } from '../bullet/ducks';
 import { matchRoomSucceed, joinRoomSucceed } from '../matching/ducks';
 import { ClientRoom } from '../server/app';
 
@@ -26,39 +26,19 @@ export interface State {
   status: GameStatus;
   countDownNumber: number;
   players: IPlayer[];
-  boxes: Box[];
-  walls: Wall[];
-  bullets: Bullet[];
+  actionLog: Action[];
 }
 
 const initialState = {
   status: GameStatus.NotStarting,
   countDownNumber: 0,
   players: [],
-  boxes: [],
-  walls: [],
-  bullets: [],
+  actionLog: [],
 };
 
-const createPlayer = (
-  x: number,
-  y: number,
-  playerId: string,
-  isFacingRight: boolean = false,
-  name: string = 'hoge',
-): IPlayer => ({
-  x,
-  y,
-  playerId,
-  name,
-  isFacingRight,
-  isJumping: false,
-  vy: 0,
-});
-
 const initPlayer = (room: ClientRoom): IPlayer[] => [
-  createPlayer(100, 500, '1'),
-  createPlayer(900, 500, '2'),
+  new Player(),
+  new Player(),
 ];
 
 export const reducer = (state: State = initialState, action: Action) => {
@@ -80,6 +60,12 @@ export const reducer = (state: State = initialState, action: Action) => {
       ...state,
       countDownNumber: state.countDownNumber - 1,
     };
+  }
+  if (isType(action, gameTick)) {
+    return {
+      ...state,
+      players: state.players.map(updatePlayer),
+    }
   }
 };
 

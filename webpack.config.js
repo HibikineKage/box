@@ -2,6 +2,7 @@ const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 
 const baseConfig = {
+  context: path.join(__dirname, 'src'),
   entry: path.join(__dirname, 'src', 'index.tsx'),
   output: {
     path: path.resolve(__dirname, 'public', 'dist'),
@@ -16,70 +17,61 @@ const baseConfig = {
   },
   module: {
     /* ファイルローダーなどの設定 */
-    rules: [
-      {
-        oneOf: [
-          /* Images */
-          {
-            test: /\.(png|jpe?g)$/,
-            use: [
-              {
-                loader: 'url-loader',
-                options: {
-                  limit: 10000,
-                  name: 'static/media/[name].[hash:8].[ext]',
-                },
-              },
-            ],
+    rules: [{
+      oneOf: [
+        /* Images */
+        {
+          test: /\.(png|jpe?g)$/,
+          use: [{
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              name: 'static/media/[name].[hash:8].[ext]',
+            },
+          },],
+        },
+        {
+          /* JavaScript */
+          test: /\.jsx?$/,
+          exclude: /node_modules/,
+          use: [{
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+            },
+          },],
+        },
+        /* TypeScript */
+        {
+          test: /\.tsx?$/,
+          use: [{
+            loader: 'ts-loader',
+          },],
+          exclude: /node_modules/,
+        },
+        /* SASS */
+        {
+          test: /\.scss$/,
+          use: [{
+            loader: 'style-loader',
           },
           {
-            /* JavaScript */
-            test: /\.jsx?$/,
-            exclude: /node_modules/,
-            use: [
-              {
-                loader: 'babel-loader',
-                options: {
-                  cacheDirectory: true,
-                },
-              },
-            ],
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
           },
-          /* TypeScript */
           {
-            test: /\.tsx?$/,
-            use: [
-              {
-                loader: 'ts-loader',
-              },
-            ],
-            exclude: /node_modules/,
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
           },
-          /* SASS */
-          {
-            test: /\.scss$/,
-            use: [
-              {
-                loader: 'style-loader',
-              },
-              {
-                loader: 'css-loader',
-                options: {
-                  sourceMap: true,
-                },
-              },
-              {
-                loader: 'sass-loader',
-                options: {
-                  sourceMap: true,
-                },
-              },
-            ],
-            exclude: /node_modules/,
-          },
-        ],
-      },
-    ],
+          ],
+          exclude: /node_modules/,
+        },
+      ],
+    },],
   },
   resolve: {
     extensions: [
@@ -112,20 +104,16 @@ const serverConfig = {
     filename: 'server.js',
   },
   module: {
-    rules: [
-      {
-        oneOf: [
-          {
-            test: /\.ts$/,
-            loader: 'ts-loader',
-            exclude: /node_modules/,
-            options: {
-              configFile: 'tsconfig.server.json',
-            },
-          },
-        ],
-      },
-    ],
+    rules: [{
+      oneOf: [{
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+        options: {
+          configFile: 'tsconfig.server.json',
+        },
+      },],
+    },],
   },
 };
 module.exports = [baseConfig, serverConfig];

@@ -11,11 +11,15 @@ export const MATCH_ROOM = 'MATCH_ROOM';
 export const MATCH_ROOM_TIMEOUT = 'MATCH_ROOM_TIMEOUT';
 export const JOIN_ROOM = 'JOIN_ROOM';
 export const JOIN_ROOM_SUCCEED = 'JOIN_ROOM_SUCCEED';
+export const JOIN_ROOM_TIMEOUT = 'JOIN_ROOM_TIMEOUT';
 export const joinRoomSucceed = actionCreator<ClientRoom>(JOIN_ROOM_SUCCEED);
 export const JOIN_ROOM_FAILED = 'JOIN_ROOM_FAILED';
 export const DELETED_ROOM = 'DELETED_ROOM';
 export interface MatchingUser {
   name: string;
+}
+export interface JoinRoomAction extends Action {
+  payload: ClientRoom;
 }
 export enum MatchingStatus {
   Default = 'DEFAULT',

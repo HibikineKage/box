@@ -2,6 +2,8 @@ import { actionCreatorFactory } from 'typescript-fsa';
 import { Action } from 'redux';
 import { IPlayer } from '../player/ducks';
 
+export const BOX_HEIGHT = 100;
+export const INITIAL_BOX_COUNT = 3;
 const actionCreator = actionCreatorFactory();
 export const ADD_BOX = 'ADD_BOX';
 export const addBox = actionCreator<{ x: number; y: number; playerId: string }>(
