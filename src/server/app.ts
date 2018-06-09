@@ -28,7 +28,6 @@ import Rooms, { Room, RoomStatus } from './rooms';
 
 dotenv.config({ path: '.env' });
 const http = require('http');
-const path = require('path');
 
 export interface ClientRoom {
   name: string;
