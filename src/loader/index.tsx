@@ -1,16 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-interface Props {}
+interface Props {
+  children: React.ReactNode;
+}
 
 export class Loader extends React.Component<Props> {
-  componentDidMount() {
-    this.props.
-  }
   render() {
-    <div>this.props.children</div>
+    return <div>{this.props.children}</div>;
   }
 }
 
 export default connect()(Loader);
-

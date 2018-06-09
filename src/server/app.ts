@@ -2,6 +2,8 @@
 import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as socketIO from 'socket.io';
+import { Server } from 'http';
+import * as path from 'path';
 import {
   REQUEST_ROOM_LIST,
   RECEIVE_ROOM_LIST,
@@ -19,7 +21,6 @@ import {
   MATCH_ROOM_TIMEOUT,
 } from '../matching/ducks';
 import { nextRoomId } from './utils';
-import { Server } from 'http';
 import setHeader from './header';
 import Users, { User } from './users';
 import { CONNECTION_EXPIRED_ERROR } from './errors';
@@ -45,7 +46,6 @@ const roomToClientRoom = (room: Room): ClientRoom => ({
   roomId: room.roomId,
 });
 
-
 export default class App {
   app: express.Express;
   http: Server;
@@ -58,12 +58,16 @@ export default class App {
     this.http = http.Server(app);
     this.io = socketIO(http, { origins: 'localhost:*' });
     this.app.use(setHeader);
+    this.app.use(express.static(path.resolve('public')));
+    this.app.use(express.static(path.resolve('../public')));
     this.app.use(express.static('public'));
+    this.app.use(express.static('../public'));
+    this.app.use(express.static(`${__dirname}/../public`));
     this.app.set('port', process.env.PORT || 3030);
     console.log(`port set to ${process.env.PORT || 3030}`);
 
     this.http.listen(this.app.get('port'), () => {
-      console.log(`listening on *:${app.get('port')}`);
+      console.log(`listening on *:${this.app.get('port')}`);
     });
 
     this.io.on('connection', (socket: socketIO.Socket) => {
@@ -95,7 +99,9 @@ export default class App {
       });
 
       socket.on(MATCH_ROOM_TIMEOUT, () => {
-        this.rooms = this.rooms.filter(room => room.host.socketId !== socket.client.id);
+        this.rooms = this.rooms.filter(
+          room => room.host.socketId !== socket.client.id,
+        );
         socket.emit(DELETED_ROOM);
       });
 
@@ -134,8 +140,12 @@ export default class App {
 
       socket.on('disconnect', () => {
         console.log('user disconnected.');
-        this.users = this.users.filter(user => user.socketId !== socket.client.id);
-        this.rooms = this.rooms.filter(room => room.host.socketId !== socket.client.id);
+        this.users = this.users.filter(
+          user => user.socketId !== socket.client.id,
+        );
+        this.rooms = this.rooms.filter(
+          room => room.host.socketId !== socket.client.id,
+        );
       });
     });
   }
@@ -146,5 +156,3 @@ export default class App {
     return this.users.find(user => user.socketId === socketId);
   }
 }
-
-

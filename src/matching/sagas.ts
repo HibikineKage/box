@@ -8,17 +8,24 @@ import {
   MATCH_ROOM_TIMEOUT,
   JOIN_ROOM_SUCCEED,
   JOIN_ROOM_FAILED,
-  JOIN_ROOM_TIMEOUT,
 } from './ducks';
+import * as Api from './api';
+import { Action } from 'typescript-fsa';
+import { JOIN_ROOM_TIMEOUT } from './ducks';
+import { ClientRoom } from '../server/app';
 
-export function* joinRoom(action: Action) {
+interface JoinRoomAction extends Action<ClientRoom> {
+  payload: ClientRoom;
+}
+
+export function* joinRoom(action: JoinRoomAction) {
   try {
     const { joining, timeout } = yield race({
       joining: call(Api.joinRoom, action.payload),
       timeout: delay(10000),
     });
     if (timeout) {
-      yield put({ type JOIN_ROOM_TIMEOUT });
+      yield put({ type: JOIN_ROOM_TIMEOUT });
       return;
     }
     if (joining.type && joining.type === JOIN_ROOM_FAILED) {

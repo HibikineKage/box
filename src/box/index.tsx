@@ -17,11 +17,6 @@ export const Boxes = (props: Props) => (
     <Sprite texture={boxTexture} />
   </Container>
 );
-export default connect(
-  (state: State) => ({ boxes: state.game.boxes }),
-  null,
-  (stateProps, dispatchProps, ownProps) => ({
-    ...ownProps,
-    ...stateProps,
-  }),
-)(Boxes);
+export default connect((state: State) => ({
+  boxes: state.game.boxes.map(b => ({ x: b.x, y: b.y })),
+}))(Boxes);
