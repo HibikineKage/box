@@ -4,9 +4,9 @@ import {
   MATCH_ROOM_SUCCEED,
   MATCH_ROOM_TIMEOUT,
   DELETED_ROOM,
-  JOIN_ROOM,
   JOIN_ROOM_SUCCEED,
   JOIN_ROOM_FAILED,
+  JOIN_ROOM,
 } from './ducks';
 import { ClientRoom } from '../server/app';
 import { wait } from '../utils';
@@ -30,12 +30,14 @@ export const matchUserTimeout = (): Promise<any> => {
   ]);
 };
 
-export const joinRoom = (room: ClientRoom): any => {
-  const race = Promise.race([
-    new Promise(resolve =>
-      socket.on(JOIN_ROOM_SUCCEED, (r: ClientRoom) => resolve(r)),
+export const joinRoom = (room: ClientRoom): Promise<ClientRoom | Action> => {
+  const race: Promise<ClientRoom | Action> = Promise.race([
+    new Promise((resolve: (room: ClientRoom) => any) =>
+      socket.on(JOIN_ROOM_SUCCEED, resolve),
     ),
-    new Promise(resolve => socket.on(JOIN_ROOM_FAILED, resolve)),
+    new Promise((resolve: (arg: Action) => any) =>
+      socket.on(JOIN_ROOM_FAILED, resolve),
+    ),
   ]);
   socket.emit(JOIN_ROOM, room);
   return race;

@@ -1,7 +1,6 @@
 import { delay } from 'redux-saga';
 import { put, call, race, fork } from 'redux-saga/effects';
 import { fetchRoomList } from '../rooms/sagas';
-import { matchUser, matchUserTimeout } from './api';
 import {
   MATCH_ROOM_FAILED,
   MATCH_ROOM_SUCCEED,
@@ -11,18 +10,14 @@ import {
 } from './ducks';
 import * as Api from './api';
 import { Action } from 'typescript-fsa';
-import { JOIN_ROOM_TIMEOUT } from './ducks';
+import { JOIN_ROOM_TIMEOUT, JoinRoomAction } from './ducks';
 import { ClientRoom } from '../server/app';
-
-interface JoinRoomAction extends Action<ClientRoom> {
-  payload: ClientRoom;
-}
 
 export function* joinRoom(action: JoinRoomAction) {
   try {
     const { joining, timeout } = yield race({
       joining: call(Api.joinRoom, action.payload),
-      timeout: delay(10000),
+      timeout: delay(60000),
     });
     if (timeout) {
       yield put({ type: JOIN_ROOM_TIMEOUT });
@@ -40,11 +35,11 @@ export function* joinRoom(action: JoinRoomAction) {
 
 export function* waitMatching() {
   const { matching, timeout } = yield race({
-    matching: call(matchUser),
+    matching: call(Api.matchUser),
     timeout: call(delay, 1000),
   });
   if (timeout) {
-    yield call(matchUserTimeout);
+    yield call(Api.matchUserTimeout);
     yield put({ type: MATCH_ROOM_TIMEOUT });
     yield fork(fetchRoomList);
     return;

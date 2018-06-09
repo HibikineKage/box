@@ -14,9 +14,13 @@ export const JOIN_ROOM_SUCCEED = 'JOIN_ROOM_SUCCEED';
 export const JOIN_ROOM_TIMEOUT = 'JOIN_ROOM_TIMEOUT';
 export const joinRoomSucceed = actionCreator<ClientRoom>(JOIN_ROOM_SUCCEED);
 export const JOIN_ROOM_FAILED = 'JOIN_ROOM_FAILED';
+export const JOIN_ROOM_TIMEOUT = 'JOIN_ROOM_TIMEOUT';
 export const DELETED_ROOM = 'DELETED_ROOM';
 export interface MatchingUser {
   name: string;
+}
+export interface JoinRoomAction extends Action {
+  payload: ClientRoom
 }
 export enum MatchingStatus {
   Default = 'DEFAULT',
@@ -38,29 +42,29 @@ const reducer = (state: State = initialState, action: Action) => {
     };
   }
   switch (action.type) {
-  case ADD_ROOM_SUCCEED:
-    return {
-      ...state,
-      status: MatchingStatus.Waiting,
-    };
-  case JOIN_ROOM:
-    return {
-      ...state,
-      status: MatchingStatus.Joining,
-    };
-  case MATCH_ROOM_FAILED:
-  case JOIN_ROOM_FAILED:
-    return {
-      ...state,
-      status: MatchingStatus.Default,
-    };
-  case MATCH_ROOM_TIMEOUT:
-    return {
-      ...state,
-      status: MatchingStatus.Timeout,
-    };
-  default:
-    return state;
+    case ADD_ROOM_SUCCEED:
+      return {
+        ...state,
+        status: MatchingStatus.Waiting,
+      };
+    case JOIN_ROOM:
+      return {
+        ...state,
+        status: MatchingStatus.Joining,
+      };
+    case MATCH_ROOM_FAILED:
+    case JOIN_ROOM_FAILED:
+      return {
+        ...state,
+        status: MatchingStatus.Default,
+      };
+    case MATCH_ROOM_TIMEOUT:
+      return {
+        ...state,
+        status: MatchingStatus.Timeout,
+      };
+    default:
+      return state;
   }
 };
 export default reducer;
