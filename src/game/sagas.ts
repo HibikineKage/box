@@ -1,5 +1,4 @@
 import { delay } from 'redux-saga';
-
 import { put, select, fork } from 'redux-saga/effects';
 import {
   INITIAL_COUNT,
@@ -14,7 +13,7 @@ import { IPlayer } from '../player/ducks';
 const TPS = 20;
 const gameSelector = (state: State) => state.game;
 const isGameFinished = (players: IPlayer[]): boolean =>
-  players.some(p => p.boxCount == 0);
+  players.some(p => p.boxCount === 0);
 export function* ticker(initialTick: number) {
   let tickCount = 0;
   while (isGameFinished((yield select(gameSelector)).players)) {

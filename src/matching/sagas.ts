@@ -1,3 +1,4 @@
+import { Action } from 'typescript-fsa';
 import { delay } from 'redux-saga';
 import { put, call, race, fork } from 'redux-saga/effects';
 import { fetchRoomList } from '../rooms/sagas';
@@ -7,10 +8,10 @@ import {
   MATCH_ROOM_TIMEOUT,
   JOIN_ROOM_SUCCEED,
   JOIN_ROOM_FAILED,
+  JOIN_ROOM_TIMEOUT,
+  JoinRoomAction,
 } from './ducks';
 import * as Api from './api';
-import { Action } from 'typescript-fsa';
-import { JOIN_ROOM_TIMEOUT, JoinRoomAction } from './ducks';
 import { ClientRoom } from '../server/app';
 
 export function* joinRoom(action: JoinRoomAction) {
@@ -28,7 +29,7 @@ export function* joinRoom(action: JoinRoomAction) {
       return;
     }
     // TODO:
-  } catch {
+  } catch (_) {
     yield put({ type: JOIN_ROOM_FAILED });
   }
 }

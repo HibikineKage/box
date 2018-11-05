@@ -17,61 +17,70 @@ const baseConfig = {
   },
   module: {
     /* ファイルローダーなどの設定 */
-    rules: [{
-      oneOf: [
-        /* Images */
-        {
-          test: /\.(png|jpe?g)$/,
-          use: [{
-            loader: 'url-loader',
-            options: {
-              limit: 10000,
-              name: 'static/media/[name].[hash:8].[ext]',
-            },
-          },],
-        },
-        {
-          /* JavaScript */
-          test: /\.jsx?$/,
-          exclude: /node_modules/,
-          use: [{
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: true,
-            },
-          },],
-        },
-        /* TypeScript */
-        {
-          test: /\.tsx?$/,
-          use: [{
-            loader: 'ts-loader',
-          },],
-          exclude: /node_modules/,
-        },
-        /* SASS */
-        {
-          test: /\.scss$/,
-          use: [{
-            loader: 'style-loader',
+    rules: [
+      {
+        oneOf: [
+          /* Images */
+          {
+            test: /\.(png|jpe?g)$/,
+            use: [
+              {
+                loader: 'url-loader',
+                options: {
+                  limit: 10000,
+                  name: 'static/media/[name].[hash:8].[ext]',
+                },
+              },
+            ],
           },
           {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
-            },
+            /* JavaScript */
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  cacheDirectory: true,
+                },
+              },
+            ],
           },
+          /* TypeScript */
           {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-            },
+            test: /\.tsx?$/,
+            use: [
+              {
+                loader: 'ts-loader',
+              },
+            ],
+            exclude: /node_modules/,
           },
-          ],
-          exclude: /node_modules/,
-        },
-      ],
-    },],
+          /* SASS */
+          {
+            test: /\.scss$/,
+            use: [
+              {
+                loader: 'style-loader',
+              },
+              {
+                loader: 'css-loader',
+                options: {
+                  sourceMap: true,
+                },
+              },
+              {
+                loader: 'sass-loader',
+                options: {
+                  sourceMap: true,
+                },
+              },
+            ],
+            exclude: /node_modules/,
+          },
+        ],
+      },
+    ],
   },
   resolve: {
     extensions: [
@@ -104,16 +113,20 @@ const serverConfig = {
     filename: 'server.js',
   },
   module: {
-    rules: [{
-      oneOf: [{
-        test: /\.ts$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/,
-        options: {
-          configFile: 'tsconfig.server.json',
-        },
-      },],
-    },],
+    rules: [
+      {
+        oneOf: [
+          {
+            test: /\.ts$/,
+            loader: 'ts-loader',
+            exclude: /node_modules/,
+            options: {
+              configFile: 'tsconfig.server.json',
+            },
+          },
+        ],
+      },
+    ],
   },
 };
 module.exports = [baseConfig, serverConfig];

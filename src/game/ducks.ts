@@ -65,8 +65,9 @@ export const reducer = (state: State = initialState, action: Action) => {
     return {
       ...state,
       players: state.players.map(updatePlayer),
-    }
+    };
   }
+  return state;
 };
 
 export default reducer;

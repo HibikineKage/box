@@ -11,7 +11,7 @@ export const jump = actionCreator<{ playerId: string; jumpPower: number }>(
 export const JUMP_CONSTANT = 1.0;
 export interface IPlayer {
   wallY: number;
-  y: number
+  y: number;
   vy: number;
   boxCount: number;
   bullets: IBullet[];
@@ -29,7 +29,8 @@ export interface State {
   players: IPlayer[];
 }
 
-export const isJumping = (player: IPlayer): boolean => player.y > player.boxCount * BOX_HEIGHT;
+export const isJumping = (player: IPlayer): boolean =>
+  player.y > player.boxCount * BOX_HEIGHT;
 
 export const updatePlayer = (player: IPlayer): IPlayer => {
   const newPlayer = { ...player, bullets: player.bullets.map(updateBullet) };
@@ -40,4 +41,4 @@ export const updatePlayer = (player: IPlayer): IPlayer => {
     newPlayer.y = player.boxCount * BOX_HEIGHT;
   }
   return newPlayer;
-}
+};
